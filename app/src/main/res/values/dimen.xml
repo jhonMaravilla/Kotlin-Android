@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title"> 24sp </dimen>
+    <dimen name="subTitle"> 18sp </dimen>
+    <dimen name="editText"> 16sp </dimen>
+
+    <dimen name="zipcode_icon"> 60dp </dimen>
+
+</resources>
