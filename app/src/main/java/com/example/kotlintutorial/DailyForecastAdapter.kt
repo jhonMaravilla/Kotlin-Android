@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlintutorial.model.DailyForecast
 
 class DailyForecastAdapter(
+    private val tempDisplaySettingManager: TempDisplaySettingManager,
     private val clickHandler: ((DailyForecast) -> Unit)
 ) : ListAdapter<DailyForecast, DailyForecastViewHolder>(DIFF_CONFIG) {
     companion object {
@@ -30,24 +31,30 @@ class DailyForecastAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyForecastViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.layout_daily_forecast, parent, false)
-        return DailyForecastViewHolder(itemView)
+        return DailyForecastViewHolder(itemView, tempDisplaySettingManager)
     }
 
     override fun onBindViewHolder(holder: DailyForecastViewHolder, position: Int) {
         holder.bind(getItem(position))
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             clickHandler(getItem(position))
         }
     }
 
 }
 
-class DailyForecastViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class DailyForecastViewHolder(
+    view: View,
+    private val tempDisplaySettingManager: TempDisplaySettingManager
+) : RecyclerView.ViewHolder(view) {
     private val temp = view.findViewById<TextView>(R.id.forecast_txt_temp)
     private val desc = view.findViewById<TextView>(R.id.forecast_txt_desc)
 
     fun bind(dailyForecast: DailyForecast) {
-        temp.text = String.format("%.2f", dailyForecast.temp) + " °C"
+        temp.text = formatTempForDisplay(
+            dailyForecast.temp,
+            tempDisplaySettingManager.getTempDisplaySetting()
+        )
         desc.text = dailyForecast.description
     }
 }
